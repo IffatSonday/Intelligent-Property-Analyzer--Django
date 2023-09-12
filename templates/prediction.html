@@ -1,0 +1,179 @@
+{% load static %}
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src="https://cdn.tailwindcss.com"></script>
+   <title>IPA-IntelliPropAnalyzer</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+      
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%} " />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nivo-lightbox/nivo-lightbox.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nivo-lightbox/default.css' %}" />
+    <link href="{% static 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet'%}" />
+    <link href="{% static 'https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet'%}" />
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+  <nav id="menu" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+          data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span> <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand page-scroll" href="#page-top">IPA-IntelliPropAnalyzer!</a>
+        <!-- <div class="phone"><span>Call Today</span>320-123-4321</div>-->
+      </div>
+  <!--Back button-->
+  <a href="/" class="inline-flex items-center bg-gray-300 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"><b>Home
+    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+      <path d="M5 12h14M12 5l-7 7 7 7"></path></b>
+    </svg>
+  </a>
+  </div>
+</nav>
+
+<!--Header-->
+  <header id="header">
+<div class="intro">
+  <section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="flex flex-col text-center w-full mb-12">
+        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">IntelliPropAnalyzer</h1>
+        <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Enter Proper Details and predict the property price.
+          
+          {% if predicted_price %}
+          <h2 class="leading-7 text-2xl font-bold bg-slate-700 text-gray-200">
+            Property Price :{{predicted_price}}
+          </h2>
+          {% endif %}
+        </p>
+        
+        <!--Prediction-->
+        <div class="overlay">
+        <form method="post" action="/prediction">
+          {% csrf_token %}
+          <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+            <div class="relative flex-grow w-full">
+              <label for="full-name" class="leading-7 text-sm text-gray-50"><b>Select LotArea (in square feet): </b></label>
+              <select id="LotArea" name="LotArea" class="form-select bg-gray-50" aria-label="Default select example">
+                <option value='9.17'>9.17</option>
+                <option value='8.89'>8.89</option>
+                <option value='9.05'>9.05</option>
+                <option value='8.72'>8.72</option>
+                <option value='9.31'>9.31</option>
+                <option value='7.88'>7.88</option>
+                <option value='9.04'>9.04</option>
+             <option selected value="0" >0</option>
+            </select>
+          </div>
+          <div class="relative flex-grow w-full">
+          <label for="email" class="leading-7 text-sm text-gray-50"><b>Select Zoning Area</b></label>
+          <select id="MSZoning" name="MSZoning" class="form-select bg-gray-50" aria-label="Default select example">
+             <option value="A">Agriculture</option>
+          <option value="FV">Floating Village Residential</option>
+          <option value="I">Industrial</option>
+          <option value="RH">Residential High Density</option>
+          <option value="RL">Residential Low Density</option>
+          <option value="RP">Residential Low Density Park</option>
+          <option value="RM">Residential Medium Density</option>
+          <option value="C">Commercial</option>
+          <option selected value="0">NA</option>
+           </select>
+        </div>
+      </div>
+      <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+       <div class="relative flex-grow w-full">
+         <label for="full-name" class="leading-7 text-sm text-gray-50"><b>Select Building Type</b></label>
+         <select id="BldgType" name="BldgType" class="form-select bg-gray-50" aria-label="Default select example">
+          <option value="1Fam">Single-family Detached</option>
+          <option value="2FmCon">Two-family Conversion</option>
+          <option value="Duplx">Duplex</option>
+          <option value="TwnhsE">Townhouse End Unit</option>
+          <option value="TwnhsI">Townhouse Inside Unit</option>
+          <option selected value="0">NA</option>
+         </select>
+       </div>
+       <div class="relative flex-grow w-full">
+        <label for="email" class="leading-7 text-sm text-gray-50"><b>Enter Exterior Quality of building</b></label>
+        <select id="ExterQual" name="ExterQual" class="form-select bg-gray-50" aria-label="Default select example">
+         <option selected value="0">NA</option>
+         <option value="Gd">Good</option>
+         <option value="TA">Average/Typical</option>
+         <option value="Ex">Excellent</option>
+         <option value="Fa">Fair</option>
+       </select>
+      </div>
+      </div>
+     <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+      <div class="relative flex-grow w-full">
+        <label for="OverallQual" class="leading-7 text-sm text-gray-50"><b>Enter Overall Quality of Bulding</b></label>
+        <select id="OverallQual" name="OverallQual" class="form-select bg-gray-50" aria-label="Default select example">
+          <option selected value="0" >0</option>
+          <option value='1'>1</option>
+          <option value='2'>2</option>
+          <option value='3'>3</option>
+          <option value='4'>4</option>
+          <option value='5'>5</option>
+          <option value='6'>6</option>
+          <option value="7" >7</option>
+          <option value="8" >8</option>
+          <option value="9" >9</option>
+          <option value="10" >10</option>
+        </select>
+      </div>
+      <div class="relative flex-grow w-full">
+         <label for="full-name" class="leading-7 text-sm text-gray-50"><b>Select Grage Type</b></label>
+         <select id="GarageType" name="GarageType" class="form-select bg-gray-50" aria-label="Default select example">
+          <option value='2Types'>More than one type of garage</option>
+                <option value='Attchd'>Attached to home</option>
+                <option value='Basment'>Basement Garage</option>
+                <option value='BuiltIn'>Built-In (Garage part of house - typically has room above garage)</option>
+                <option value='CarPort'>Car Port</option>
+                <option value='Detchd'>Detached from home</option>
+             <option value="NA" >No Garage</option>
+             <option selected value="0" >NA</option>
+        </select>
+       </div>
+     </div>
+     <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+      <div class="relative flex-grow w-full">
+        <label for="full-name" class="leading-7 text-sm text-gray-50"><b>Want Central Air?</b></label>
+        <select id="CentralAir" name="CentralAir" class="form-select bg-gray-50" aria-label="Default select example">
+          <option value='Y'>Yes</option>
+          <option selected value="N" >No</option>
+        </select>
+      </div>
+      <div class="relative flex-grow w-full">
+       <label for="email" class="leading-7 text-sm text-gray-50"><b>Enter Heating Type</b></label>
+       <select id="Heating" name="Heating" class="form-select bg-gray-50" aria-label="Default select example">
+        <option value='Floor'>Floor Furnace</option>
+        <option value='GasA'>Gas forced warm air furnace</option>
+        <option value='GasW'>Gas hot water or steam heat</option>
+        <option value='Grav'>Gravity furnace</option>
+        <option value='OthW'>Hot water or steam heat other than gas</option>
+        <option value='Wall'>Wall furnace</option>
+        <option selected value="0" >NA</option>
+      </select>
+     </div>
+     </div>
+      <div class="text-center my-4"><button id="predict" name="predict "type="submit" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Predict</button></div>
+    </form>
+  </div>
+</div>
+</section>
+</div>
+</div>
+</header>
+        
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"></script>
+</body>
+</html>
